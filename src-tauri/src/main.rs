@@ -1,6 +1,7 @@
 use macos::Event;
 use serde::Serialize;
 use tauri::{AppHandle, Manager};
+use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
 
 #[cfg(target_os = "macos")]
 mod macos;
@@ -48,7 +49,20 @@ fn macos_callback(event: Event, app: &AppHandle) {
 }
 
 fn main() {
+    let quit = CustomMenuItem::new("quit".to_string(), "Quit");
+    let submenu = Submenu::new("File", Menu::new().add_item(quit));
+    let menu = Menu::new()
+        .add_native_item(MenuItem::Copy)
+        .add_submenu(submenu);
+
     tauri::Builder::default()
+        .menu(menu)
+        .on_menu_event(|event| match event.menu_item_id() {
+            "quit" => {
+                std::process::exit(0);
+            }
+            _ => {}
+        })
         .setup(|app| {
             let app_handle = app.app_handle().to_owned();
 
@@ -70,9 +84,9 @@ fn main() {
         .build(tauri::generate_context!())
         .expect("error while running tauri application")
         .run(|_app_handle, event| match event {
-            tauri::RunEvent::ExitRequested { api, .. } => {
-                api.prevent_exit();
-            }
+            // tauri::RunEvent::ExitRequested { api, .. } => {
+            //     api.prevent_exit();
+            // }
             _ => {}
         })
 }
