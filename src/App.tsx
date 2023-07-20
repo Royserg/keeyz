@@ -33,7 +33,7 @@ function App() {
   });
 
   return (
-    <div class="container bg-black min-h-full h-24 p-1">
+    <div class="container bg-black min-h-full h-24 p-1 rounded-sm">
       <div class="flex flex-row-reverse gap-x-0.5">
         <For each={keys()}>{(item) => <ClickedKey data={item}></ClickedKey>}</For>
       </div>
