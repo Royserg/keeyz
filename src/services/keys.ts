@@ -42,7 +42,6 @@ export const handleClickedKey = (data: { keyName: string; eventType: KeyEventTyp
 
     if (isShiftActive()) {
       return new Key('⇧+' + keySymbol);
-      // return '⇧+' + keySymbol;
     }
 
     return new Key(keySymbol);

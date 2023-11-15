@@ -12,13 +12,6 @@ function App() {
 
   let unlisten: UnlistenFn;
   onMount(async () => {
-    setInterval(() => {
-      setKeys((keys) => {
-        const withoutLast = keys.slice(0, -1);
-        return withoutLast;
-      });
-    }, 1500);
-
     unlisten = await listen(KEY_EVENT, (event: KeyEvent) => {
       const { key, event_type } = event.payload;
       const clickedKey = handleClickedKey({
@@ -36,24 +29,28 @@ function App() {
     unlisten();
   });
 
+  const handleKeyLifeEnd = (id: string) => {
+    setKeys((keys) => keys.filter((k) => k.id !== id));
+  };
+
   return (
     <div class="container bg-black min-h-full h-24 p-1 rounded-sm">
       <div class="flex flex-row-reverse gap-x-1 overflow-hidden">
         <TransitionGroup
           onEnter={(el, done) => {
             const a = el.animate([{ opacity: 0 }, { opacity: 1 }], {
-              duration: 600,
+              duration: 300,
             });
             a.finished.then(done);
           }}
           onExit={(el, done) => {
             const a = el.animate([{ opacity: 1 }, { opacity: 0 }], {
-              duration: 150,
+              duration: 250,
             });
             a.finished.then(done);
           }}
         >
-          <For each={keys()}>{(key) => <ClickedKey>{key.value}</ClickedKey>}</For>
+          <For each={keys()}>{(key) => <ClickedKey key={key} onLifeEnd={handleKeyLifeEnd} />}</For>
         </TransitionGroup>
       </div>
 
