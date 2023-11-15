@@ -12,14 +12,14 @@
   "license": "MIT",
   "dependencies": {
     "@nanostores/solid": "^0.4.2",
-    "@tauri-apps/api": "^1.4.0",
+    "@tauri-apps/api": "^1.5.1",
     "nanoid": "^5.0.3",
     "nanostores": "^0.9.3",
     "solid-js": "^1.8.5",
     "solid-transition-group": "^0.2.3"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.4.0",
+    "@tauri-apps/cli": "^1.5.6",
     "@types/node": "^20.4.2",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.26",
