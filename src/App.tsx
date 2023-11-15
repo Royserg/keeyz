@@ -38,15 +38,27 @@ function App() {
       <div class="flex flex-row-reverse gap-x-1 overflow-hidden">
         <TransitionGroup
           onEnter={(el, done) => {
-            const a = el.animate([{ opacity: 0 }, { opacity: 1 }], {
-              duration: 200,
-            });
+            const a = el.animate(
+              [
+                { opacity: 0, transform: 'translateY(15px)' },
+                { opacity: 1, transform: 'translateY(0px)' },
+              ],
+              {
+                duration: 200,
+              },
+            );
             a.finished.then(done);
           }}
           onExit={(el, done) => {
-            const a = el.animate([{ opacity: 1 }, { opacity: 0 }], {
-              duration: 250,
-            });
+            const a = el.animate(
+              [
+                { opacity: 1, transform: 'translateX(0px)' },
+                { opacity: 0, transform: 'translateX(-20px)' },
+              ],
+              {
+                duration: 250,
+              },
+            );
             a.finished.then(done);
           }}
         >
