@@ -13,6 +13,7 @@
   "dependencies": {
     "@nanostores/solid": "^0.4.2",
     "@tauri-apps/api": "^1.4.0",
+    "nanoid": "^5.0.3",
     "nanostores": "^0.9.3",
     "solid-js": "^1.8.5",
     "solid-transition-group": "^0.2.3"
