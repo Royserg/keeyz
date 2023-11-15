@@ -20,7 +20,7 @@ function App() {
       });
 
       if (clickedKey) {
-        setKeys([clickedKey, ...keys()]);
+        setKeys([...keys(), clickedKey]);
       }
     });
   });
@@ -35,7 +35,7 @@ function App() {
 
   return (
     <div class="container bg-black min-h-full h-24 p-1 rounded-sm">
-      <div class="flex flex-row-reverse gap-x-1 overflow-hidden">
+      <div class="flex justify-center gap-x-1 overflow-hidden">
         <TransitionGroup
           onEnter={(el, done) => {
             const a = el.animate(
