@@ -39,7 +39,7 @@ function App() {
         <TransitionGroup
           onEnter={(el, done) => {
             const a = el.animate([{ opacity: 0 }, { opacity: 1 }], {
-              duration: 300,
+              duration: 200,
             });
             a.finished.then(done);
           }}
@@ -50,7 +50,7 @@ function App() {
             a.finished.then(done);
           }}
         >
-          <For each={keys()}>{(key) => <ClickedKey key={key} onLifeEnd={handleKeyLifeEnd} />}</For>
+          <For each={keys()}>{(key) => <ClickedKey key={key} timeToLive={1000} onLifeEnd={handleKeyLifeEnd} />}</For>
         </TransitionGroup>
       </div>
 
