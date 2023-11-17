@@ -16,6 +16,12 @@ struct KeyEventPayload {
     key: String,
 }
 
+#[derive(Clone, Serialize)]
+struct WindowFocusEventPayload {
+    event_type: String,
+    focused: bool,
+}
+
 fn macos_callback(event: Event, app: &AppHandle) {
     match event.event_type {
         EventType::KeyPress(key) => {
@@ -80,7 +86,23 @@ fn main() {
 
             Ok(())
         })
-        // .invoke_handler(tauri::generate_handler![])
+        .invoke_handler(tauri::generate_handler![])
+        .on_window_event(|event| match event.event() {
+            tauri::WindowEvent::Focused(focused) => {
+                let window = event.window();
+                window.set_decorations(*focused).unwrap();
+                window
+                    .emit(
+                        "window-focus-event",
+                        WindowFocusEventPayload {
+                            event_type: "WindowFocus".to_string(),
+                            focused: *focused,
+                        },
+                    )
+                    .unwrap();
+            }
+            _ => {}
+        })
         .build(tauri::generate_context!())
         .expect("error while running tauri application")
         .run(|_app_handle, event| match event {

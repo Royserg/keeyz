@@ -6,13 +6,19 @@ import { Modifiers } from './components/modifiers';
 import { KEY_EVENT, KeyEvent } from './interfaces/key.interface';
 import { Key } from './models';
 import { handleClickedKey } from './services/keys';
+import { cn } from './utils/cn';
+import { WINDOW_FOCUS_EVENT, WindowFocusEvent } from './interfaces/window.interface';
 
 function App() {
   const [keys, setKeys] = createSignal<Key[]>([]);
+  const [showBackground, setShowBackground] = createSignal(false);
 
-  let unlisten: UnlistenFn;
+  // -- Listeners
+  let windowFocusUnlisten: UnlistenFn;
+  let keyUnlisten: UnlistenFn;
+
   onMount(async () => {
-    unlisten = await listen(KEY_EVENT, (event: KeyEvent) => {
+    keyUnlisten = await listen(KEY_EVENT, (event: KeyEvent) => {
       const { key, event_type } = event.payload;
       const clickedKey = handleClickedKey({
         keyName: key,
@@ -23,10 +29,16 @@ function App() {
         setKeys([...keys(), clickedKey]);
       }
     });
+
+    windowFocusUnlisten = await listen(WINDOW_FOCUS_EVENT, (event: WindowFocusEvent) => {
+      console.log('FOCUSED', event.payload.focused);
+      setShowBackground(event.payload.focused);
+    });
   });
 
   onCleanup(() => {
-    unlisten();
+    keyUnlisten();
+    windowFocusUnlisten();
   });
 
   const handleKeyLifeEnd = (id: string) => {
@@ -34,7 +46,11 @@ function App() {
   };
 
   return (
-    <div class="container bg-black min-h-full h-24 p-1 rounded-sm">
+    <div
+      class={cn('container min-h-full h-24 p-1 transition-colors rounded-lg', {
+        'border border-black border-solid': showBackground(),
+      })}
+    >
       <div class="flex justify-center gap-x-1 overflow-hidden">
         <TransitionGroup
           onEnter={(el, done) => {
