@@ -68,8 +68,8 @@ function App() {
           onExit={(el, done) => {
             const a = el.animate(
               [
-                { opacity: 1, transform: 'translateX(0px)' },
-                { opacity: 0, transform: 'translateX(-20px)' },
+                { opacity: 1, transform: 'translateX(0px) translateY(0px)' },
+                { opacity: 0, transform: 'translateX(-10px) translateY(10px)' },
               ],
               {
                 duration: 250,
