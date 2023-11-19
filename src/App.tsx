@@ -55,8 +55,8 @@ function App() {
           onEnter={(el, done) => {
             const a = el.animate(
               [
-                { opacity: 0, transform: 'translateY(15px)' },
-                { opacity: 1, transform: 'translateY(0px)' },
+                { opacity: 0, transform: 'translateY(15px) scale(0.2)' },
+                { opacity: 1, transform: 'translateY(0px) scale(1)' },
               ],
               {
                 duration: 200,
@@ -67,8 +67,8 @@ function App() {
           onExit={(el, done) => {
             const a = el.animate(
               [
-                { opacity: 1, transform: 'translateX(0px) translateY(0px)' },
-                { opacity: 0, transform: 'translateX(-10px) translateY(10px)' },
+                { opacity: 1, transform: 'translateX(0px) translateY(0px) scale(1)' },
+                { opacity: 0, transform: 'translateX(-10px) translateY(10px) scale(0.2)' },
               ],
               {
                 duration: 250,
