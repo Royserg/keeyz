@@ -1,9 +1,10 @@
 import { useStore } from '@nanostores/solid';
 import { KeyEventType } from '../interfaces/key.interface';
-import { setCapsLockStatus, setShiftStatus, isShiftOn } from '../stores/modifiers';
+import { setCapsLockStatus, isCapsLockOn, setShiftStatus, isShiftOn } from '../stores/modifiers';
 import { Key } from '../models';
 
 const isShiftActive = useStore(isShiftOn);
+const isCapsActive = useStore(isCapsLockOn);
 
 export const handleClickedKey = (data: { keyName: string; eventType: KeyEventType }): Key | undefined => {
   const { keyName, eventType } = data;
@@ -13,7 +14,13 @@ export const handleClickedKey = (data: { keyName: string; eventType: KeyEventTyp
   {
     if (keyName === 'CapsLock') {
       if (eventType === 'KeyPress') {
-        setCapsLockStatus(true);
+        // NOTE: on app start with CapsLock ON
+        // first keyDown shows as 'KeyPress' instead of 'KeyRelease'
+        if (isCapsActive()) {
+          setCapsLockStatus(false);
+        } else {
+          setCapsLockStatus(true);
+        }
       }
       if (eventType === 'KeyRelease') {
         setCapsLockStatus(false);
