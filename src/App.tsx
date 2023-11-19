@@ -31,7 +31,6 @@ function App() {
     });
 
     windowFocusUnlisten = await listen(WINDOW_FOCUS_EVENT, (event: WindowFocusEvent) => {
-      console.log('FOCUSED', event.payload.focused);
       setShowBackground(event.payload.focused);
     });
   });

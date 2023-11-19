@@ -1,7 +1,7 @@
 import { Show, onMount } from 'solid-js';
 
 // --- Move mouse on top of the application window ---
-// `mouseenter` will gets triggered to get status of CapsLock
+// `mouseenter` will get triggered to get status of CapsLock
 import { useStore } from '@nanostores/solid';
 import { LogicalPosition, appWindow } from '@tauri-apps/api/window';
 import { isCapsLockOn, setCapsLockStatus } from '../stores/modifiers';
