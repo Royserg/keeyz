@@ -79,6 +79,7 @@ const keyNameToSymbolMap: { [key: string]: string } = {
   Tab: '⇥',
   SemiColon: ';',
   Quote: '"',
+  Slash: '/',
   BackSlash: '\\',
   RightBracket: ']',
   LeftBracket: '[',
