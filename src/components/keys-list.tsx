@@ -1,13 +1,14 @@
+import { useStore } from '@nanostores/solid';
 import { UnlistenFn, listen } from '@tauri-apps/api/event';
-import { For, createSignal, onCleanup, onMount } from 'solid-js';
+import { For, onCleanup, onMount } from 'solid-js';
 import { TransitionGroup } from 'solid-transition-group';
 import { KEY_EVENT, KeyEvent } from '../interfaces/key.interface';
-import { Key } from '../models';
 import { handleClickedKey } from '../services/keys';
+import { $keys, addKey } from '../stores/keys';
 import { ClickedKey } from './clicked-key';
 
 const KeysList = () => {
-  const [keys, setKeys] = createSignal<Key[]>([]);
+  const keys = useStore($keys);
 
   // -- Listeners
   let keyUnlisten: UnlistenFn;
@@ -21,21 +22,7 @@ const KeysList = () => {
       });
 
       if (clickedKey) {
-        const lastElIdx = keys().length - 1;
-        const lastEl = keys()[lastElIdx];
-
-        if (lastEl?.value === clickedKey.value) {
-          // NOTE: bump up previous key instead of adding another
-          setKeys((prev) => {
-            const lastEl = prev.pop();
-            if (lastEl) {
-              return [...prev, { ...lastEl, bumpCount: lastEl.bumpCount + 1 }];
-            }
-            return prev;
-          });
-        } else {
-          setKeys([...keys(), clickedKey]);
-        }
+        addKey(clickedKey);
       }
     });
   });
@@ -43,10 +30,6 @@ const KeysList = () => {
   onCleanup(() => {
     keyUnlisten();
   });
-
-  const handleKeyLifeEnd = (id: string) => {
-    setKeys((keys) => keys.filter((k) => k.id !== id));
-  };
 
   return (
     <div class="flex justify-center gap-x-1 overflow-hidden">
@@ -76,7 +59,7 @@ const KeysList = () => {
           a.finished.then(done);
         }}
       >
-        <For each={keys()}>{(key) => <ClickedKey key={key} timeToLive={2000} onLifeEnd={handleKeyLifeEnd} />}</For>
+        <For each={Object.keys(keys())}>{(keyId) => <ClickedKey keyId={keyId} />}</For>
       </TransitionGroup>
     </div>
   );

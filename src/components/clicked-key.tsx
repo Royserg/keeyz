@@ -1,33 +1,42 @@
-import { Component, createEffect, createSignal, onMount } from 'solid-js';
+import { Component, Show, createSignal, onCleanup, onMount } from 'solid-js';
 import { Key } from '../models';
+import { $keys, deleteKey } from '../stores/keys';
 
 interface ClickedKeyProps {
-  key: Key;
+  keyId: string;
   timeToLive?: number;
-  onLifeEnd?: (id: string) => void;
-  bumpCount?: number;
 }
 const ClickedKey: Component<ClickedKeyProps> = (props) => {
-  // const [bumpCount, setBumpCount] = createSignal<number>(props.bumpCount || 0);
-  const timeToLive = props.timeToLive || 2000;
+  const [key, setKey] = createSignal<Key | null>(null);
 
-  createEffect(() => {
-    console.log('bumpCount:', props.bumpCount);
+  const keyId = props.keyId;
+  const unlisten = $keys.subscribe((store) => {
+    const key = store[keyId];
+    if (key) {
+      setKey(key);
+    }
   });
+
+  const timeToLive = props.timeToLive || 2000;
 
   onMount(() => {
     setTimeout(() => {
-      if (props.onLifeEnd) {
-        props.onLifeEnd(props.key.id);
-      }
+      deleteKey(keyId);
     }, timeToLive);
+  });
+
+  onCleanup(() => {
+    unlisten();
   });
 
   return (
     <div class="relative p-2 px-3 border-solid border-r-slate-400 border-b-slate-500 border-r-4 border-b-4 rounded-md min-w-[40px] w-cax grid place-content-center bg-slate-200 font-medium">
-      {props.key.value}
-
-      <div class="absolute top-0 right-0">{props.key.bumpCount}</div>
+      <Show when={key()}>
+        {key()!.value}
+        <Show when={key()?.bumpCount! > 0}>
+          <div class="absolute top-0 right-0">{key()?.bumpCount}</div>
+        </Show>
+      </Show>
     </div>
   );
 };
