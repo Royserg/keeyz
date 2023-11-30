@@ -32,7 +32,7 @@ const KeysList = () => {
   });
 
   return (
-    <div class="flex justify-center gap-x-1 pt-3">
+    <div class="flex justify-end gap-x-1 pt-3">
       <TransitionGroup
         onEnter={(el, done) => {
           const a = el.animate(
