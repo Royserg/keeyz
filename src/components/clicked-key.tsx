@@ -41,9 +41,8 @@ const ClickedKey: Component<ClickedKeyProps> = (props) => {
     unlisten();
   });
 
-  // FIX: Makes it go beyound borders and on top of the other keys
   const scale = (factor: number) => {
-    return 1 + factor / 20;
+    return 1 + factor / 30;
   };
 
   return (
@@ -53,15 +52,27 @@ const ClickedKey: Component<ClickedKeyProps> = (props) => {
           'relative py-2 px-3 border-solid border-r-slate-400 border-b-slate-500 border-r-4 border-b-4 rounded-md min-w-[40px] w-cax grid place-content-center bg-slate-200 font-medium transition-all',
         )}
         style={{
-          transform: `scale(${scale(key()?.bumpCount!)})`,
+          width: `${1.7 + scale(key()!.bumpCount!)}rem`,
+          height: `${1.7 + scale(key()!.bumpCount!)}rem`,
         }}
       >
         {key()!.value}
         <Show when={key()?.bumpCount! > 0}>
-          <div class="absolute top-0 right-0">{key()?.bumpCount}</div>
+          <ComboLabel value={key()?.bumpCount!} />
         </Show>
       </div>
     </Show>
+  );
+};
+
+interface ComboLabelProps {
+  value: number;
+}
+const ComboLabel: Component<ComboLabelProps> = (props) => {
+  return (
+    <div class="h-5 grid place-content-center absolute -top-2 -right-2 rounded-md text-[12px] bg-orange-400 px-[2px]">
+      x{props.value}
+    </div>
   );
 };
 
