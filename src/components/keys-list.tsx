@@ -41,7 +41,7 @@ const KeysList = () => {
               { opacity: 1, transform: 'translateY(0px) scale(1)' },
             ],
             {
-              duration: 200,
+              duration: 100,
             },
           );
           a.finished.then(done);
