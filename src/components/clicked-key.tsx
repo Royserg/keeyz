@@ -71,7 +71,7 @@ interface ComboLabelProps {
 const ComboLabel: Component<ComboLabelProps> = (props) => {
   return (
     <div class="h-5 grid place-content-center absolute -top-2 -right-2 rounded-md text-[12px] bg-orange-400 px-[2px]">
-      x{props.value}
+      x{props.value + 1}
     </div>
   );
 };
