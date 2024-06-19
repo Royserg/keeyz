@@ -23,7 +23,7 @@ function App() {
 
   return (
     <div
-      class={cn('container min-h-full h-24 p-1 transition-colors rounded-lg', {
+      class={cn('container min-h-full h-24 p-1 transition-colors rounded-lg overflow-hidden', {
         'border border-black border-solid': showBackground(),
       })}
     >
